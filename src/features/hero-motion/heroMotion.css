@@ -1,0 +1,96 @@
+.heroMotionLayers {
+  --hero-reveal-x: 50%;
+  --hero-reveal-y: 50%;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.heroMotionOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 56% center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.heroFinishedReveal {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0 51%, #000 58% 100%);
+  mask-image: linear-gradient(90deg, transparent 0 51%, #000 58% 100%);
+  transition: opacity 140ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-hero-state="sketchReveal"] .heroFinishedReveal {
+  -webkit-mask-image:
+    radial-gradient(
+      circle calc(var(--hero-reveal-diameter) / 2) at var(--hero-reveal-x) var(--hero-reveal-y),
+      #000 0%,
+      #000 58%,
+      rgba(0, 0, 0, 0.88) 68%,
+      rgba(0, 0, 0, 0.52) 82%,
+      transparent 100%
+    ),
+    linear-gradient(90deg, transparent 0 51%, #000 58% 100%);
+  mask-image:
+    radial-gradient(
+      circle calc(var(--hero-reveal-diameter) / 2) at var(--hero-reveal-x) var(--hero-reveal-y),
+      #000 0%,
+      #000 58%,
+      rgba(0, 0, 0, 0.88) 68%,
+      rgba(0, 0, 0, 0.52) 82%,
+      transparent 100%
+    ),
+    linear-gradient(90deg, transparent 0 51%, #000 58% 100%);
+  -webkit-mask-composite: source-over;
+  mask-composite: add;
+}
+
+.heroLightLayer {
+  will-change: opacity;
+  transition: opacity 120ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.heroLightInterior {
+  opacity: var(--hero-interior-opacity);
+  filter: saturate(0.92) brightness(1.06) blur(0.25px);
+  mix-blend-mode: screen;
+}
+
+.heroLightExterior {
+  opacity: var(--hero-exterior-opacity);
+  filter: saturate(0.88) brightness(0.94);
+}
+
+.heroLightBounce {
+  opacity: var(--hero-bounce-opacity);
+  filter: saturate(0.9) brightness(0.94);
+}
+
+[data-hero-state="finishedLights"] .heroLightInterior {
+  transition: opacity 190ms cubic-bezier(0.16, 1, 0.3, 1) 70ms;
+}
+
+[data-hero-state="finishedLights"] .heroLightExterior {
+  transition: opacity 200ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
+}
+
+[data-hero-state="finishedLights"] .heroLightBounce {
+  transition: opacity 240ms cubic-bezier(0.16, 1, 0.3, 1) 180ms;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .heroMotionLayers {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroFinishedReveal,
+  .heroLightLayer {
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+  }
+}
